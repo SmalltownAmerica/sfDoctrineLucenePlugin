@@ -1,0 +1,6 @@
+search:
+  url:    /search
+  param:
+    module: search
+    action: index
+  
