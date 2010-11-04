@@ -21,7 +21,7 @@ class LuceneSearchable extends Doctrine_Template
     $obj = $this->getInvoker();
     
     return sprintf('%s/lucene/%s.idx',
-      sfConfig::get('sf_data_dir'),
+      '/tmp/indexes',
       get_class($obj)
     );
   }
@@ -71,7 +71,7 @@ class LuceneSearchable extends Doctrine_Template
     $obj = $this->getInvoker();
     if($method = $this->getOption('validator',false))
     {
-      // return $obj->$method();
+      return $obj->$method();
     }
     return $this->getOption('searchable',true);
   }
@@ -113,26 +113,31 @@ class LuceneSearchable extends Doctrine_Template
     $index->commit();
   }
 
-  public function getForLuceneQueryTableProxy($query)
+  public function getLuceneResultsTableProxy($query)
   {
     $obj    = $this->getInvoker();
     $table  = $obj->getTable();
+    $obj->getTable()->getLuceneIndex()->setResultSetLimit(10);
     $hits   = $obj->getTable()->getLuceneIndex()->find($query);
-
-    $pks = array();
-    foreach ($hits as $hit)
-    {
-      $pks[] = $hit->pk;
-    }
-
-    if (empty($pks))
-    {
-      return false;
-    }
-
-    return $table->createQuery()
-            ->whereIn('id', $pks);
-  }  
+    
+    return $hits;
+  } 
+  
+  public function getPartialName()
+  {
+    return $this->getOption('partial',false);
+  }
+  
+  public function getPartialVar()
+  {
+    return $this->getOption('partial_var');
+  }
+  
+  public function getSearchName()
+  {
+    return $this->getOption('search_name',get_class($this->getInvoker()));
+  }
+  
   /**
    * We use to test externally if this model is searchable, needs to be wrapped
    * in an a try/catch case

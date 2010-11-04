@@ -1,0 +1,4 @@
+all:
+  lucene:
+    cache:
+      class: sfNoCache

@@ -14,7 +14,7 @@ class sfDoctrineLuceneSearchForm extends sfForm
     ));
     
     $choices = $this->getModelChoices();
-    array_unshift($choices,'All');
+
     // Loop through the available models
     $this->widgetSchema['t'] = new sfWidgetFormChoice(array(
       'choices'   => $choices,
@@ -67,6 +67,7 @@ class sfDoctrineLuceneSearchForm extends sfForm
         { }
       }
     }
+    array_unshift($choices,sfContext::getInstance()->getI18n()->__('All'));
     return $choices;
   }
   
@@ -84,6 +85,7 @@ class sfDoctrineLuceneSearchForm extends sfForm
     }
     elseif(intval($choice) === 0)
     {
+      array_shift($choices);
       return $choices;
     }
     else
