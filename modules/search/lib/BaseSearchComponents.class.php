@@ -14,6 +14,11 @@ abstract class BaseSearchComponents extends sfComponents
       $this->form = new sfDoctrineLuceneSearchForm;
     }
     
+    if(!isset($this->simple))
+    {
+      $this->simple = false;
+    }
+    
     return sfView::SUCCESS;
   }
 } // END class 
