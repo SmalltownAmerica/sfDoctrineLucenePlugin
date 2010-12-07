@@ -21,7 +21,7 @@ class LuceneSearchable extends Doctrine_Template
     $obj = $this->getInvoker();
     
     return sprintf('%s/lucene/%s.idx',
-      '/tmp/indexes',
+      sfConfig::get('sf_data_dir'),
       get_class($obj)
     );
   }
@@ -147,6 +147,16 @@ class LuceneSearchable extends Doctrine_Template
   public function isSearchable()
   {
     return true;
+  }
+  
+  public function getScoreAsPercentage()
+  {
+    $obj = $this->getInvoker();
+    if($obj->hasMappedValue('score'))
+    {
+      return $obj->getScore() * 100;
+    }
+    return 0;
   }
   
   public function isSearchableTableProxy()

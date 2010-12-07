@@ -31,8 +31,7 @@ abstract class BaseSearchActions extends sfActions
         'q' => $request->getGetParameter('q'),
         't' => $request->getGetParameter('t',null),
       ));
-      
-      
+
       $this->results = array();
       
       // Loop through the models we should search against
